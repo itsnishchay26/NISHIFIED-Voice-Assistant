@@ -1,0 +1,7 @@
+#Copy paste these commands in the terminal 
+
+pip install pyttsx3 
+pip install datetime
+pip install SpeechRecognition
+pip install webbrowser
+pip install os
