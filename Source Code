@@ -1,0 +1,96 @@
+from pickle import TRUE
+from tkinter.tix import MAIN
+from pip import main
+import pyttsx3
+import datetime
+import speech_recognition as sr
+import pyaudio
+import wikipedia
+import webbrowser
+import os
+
+
+engine = pyttsx3.init('sapi5')
+voices = engine.getProperty('voices')
+#print(voices[1].id)
+engine.setProperty('voices',voices[0].id)
+
+#this functions speaks whatver the argument is passed
+def speak(audio):
+    engine.say(audio)
+    engine.runAndWait()
+
+#this functions wishes us
+def wish_me():
+    hour = int(datetime.datetime.now().hour)
+    if hour>=0 and hour<12:
+        speak("Good Morning Master")
+        print("Good Morning Master")
+    elif hour>=12 and hour<17:
+        speak("Good Afternoon Master")
+        print("Good Afternoon Master")
+    elif hour>=17 and hour<19:
+        speak("Good Evening Master")
+        print("Good Evening Master")
+    elif hour>=19 and hour<24:
+        speak("Good Night Master")
+        print("Good Night Master")            
+
+    speak("Nishified at your service sir. How may I help you")
+    print("Nishified at your service sir. How may I help you ?")
+
+#this function takes command from the microphone and return string output
+def take_command():
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Listening you...")
+        r.pause_threshold = 1
+        audio = r.listen(source)
+
+    try:
+        print("Recognizing...")
+        query = r.recognize_google(audio,language='en-in')
+        print(f"User said: {query}\n")
+
+    except Exception as e:
+        #print(e)
+        print("Repeat that again please...")        
+        return "None"
+    return query
+
+
+if __name__ == "__main__":
+        
+    wish_me()  
+
+
+    while TRUE:
+        query = take_command().lower()
+
+        #below mentioned is the logic to perform tasks based on query
+
+        if 'open youtube' in query:
+            webbrowser.open("youtube.com")
+
+        elif 'open gmail' in query:
+            webbrowser.open("gmail.com")
+
+        elif 'open google' in query:
+            webbrowser.open("google.com")
+
+        elif 'open stack overflow' in query:
+            webbrowser.open("stackoverflow.com")
+
+        elif 'play music' in query:
+            music_dir = 'D:\\Music Folder'
+            songs = os.listdir(music_dir)
+            #print(songs)
+            os.startfile(os.path.join(music_dir,songs[1]))
+
+        elif 'the time' in query:
+            str_time = datetime.datetime.now().strftime("%H : %M : %S")
+            speak(f"Sir, the time is {str_time}")
+            print(f"Sir, the time is {str_time}")
+
+
+          
